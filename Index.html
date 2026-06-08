@@ -1,96 +1,127 @@
-<html> 
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 STARGEMS 💎</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #E6F0FF, #CCE0FF); /* azul suave */
-            color: #1A1F71; /* azul oscuro para contraste */
-            text-align: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        header {
-            background-color: #4A70B8; /* azul medio */
-            color: #ffffff;
-            padding: 20px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
+<title>Portada Wiki</title>
 
-        header h1 {
-            font-size: 2.5rem;
-            margin: 0;
-        }
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f6f8fa;
+}
 
-        header h2 {
-            font-size: 1.2rem;
-            color: #A3C1FF; /* azul claro */
-            font-weight: normal;
-            margin: 10px 0 0;
-        }
+header{
+    background:#3366cc;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
 
-        main {
-            padding: 40px 20px;
-        }
+header h1{
+    margin:0;
+}
 
-        h3 {
-            font-size: 1.8rem;
-            color: #2E3A87; /* azul profundo */
-            margin-bottom: 30px;
-        }
+.contenedor{
+    width:90%;
+    max-width:1000px;
+    margin:auto;
+    padding:30px;
+}
 
-        .botones {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 25px;
-        }
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
 
-        .boton {
-            background-color: #A3C1FF; /* azul pastel */
-            border: 2px solid #4A70B8; /* azul medio */
-            border-radius: 15px;
-            width: 220px;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-decoration: none;
-            color: #1A1F71; /* azul oscuro */
-            font-size: 1.3rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+.tarjeta{
+    background:white;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
 
-        .boton:hover {
-            background-color: #7FAEFF; /* azul más brillante */
-            transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-        }
+.tarjeta:hover{
+    transform:translateY(-5px);
+}
 
-    </style>
+.tarjeta h2{
+    color:#3366cc;
+    margin-top:0;
+}
+
+.boton{
+    display:inline-block;
+    margin-top:10px;
+    padding:10px 15px;
+    background:#3366cc;
+    color:white;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.boton:hover{
+    background:#254eaa;
+}
+</style>
+
 </head>
+
 <body>
 
-    <header>
-        <h1>✨💎 STARGEMS 💎✨</h1>
-        <h2>“Porque en cada página puede haber una gema escondida”</h2>
-    </header>
+<header>
+    <h1>Mi Wiki</h1>
+    <p>Selecciona una sección para explorar</p>
+</header>
 
-    <main>
-        <h3>Productos Principales</h3>
+<div class="contenedor">
 
-        <div class="botones">
-            <a href="Mangas.html" class="boton">📘 Mangas</a>
-            <a href="Descripcion.html" class="boton">📖 Descripción</a>
-            <a href="Resumen.html" class="boton">📝 Información</a>
-            <a href="Historial.html" class="boton">💬 Comentarios y Recomendaciones</a>
+    <div class="grid">
+
+        <div class="tarjeta">
+            <h2>📖 Sección 1</h2>
+            <p>Información de la primera sección.</p>
+            <a href="seccion1.html" class="boton">Entrar</a>
         </div>
-    </main>
+
+        <div class="tarjeta">
+            <h2>🧬 Sección 2</h2>
+            <p>Información de la segunda sección.</p>
+            <a href="seccion2.html" class="boton">Entrar</a>
+        </div>
+
+        <div class="tarjeta">
+            <h2>🌎 Sección 3</h2>
+            <p>Información de la tercera sección.</p>
+            <a href="seccion3.html" class="boton">Entrar</a>
+        </div>
+
+        <div class="tarjeta">
+            <h2>💻 Sección 4</h2>
+            <p>Información de la cuarta sección.</p>
+            <a href="seccion4.html" class="boton">Entrar</a>
+        </div>
+
+        <div class="tarjeta">
+            <h2>📚 Sección 5</h2>
+            <p>Información de la quinta sección.</p>
+            <a href="seccion5.html" class="boton">Entrar</a>
+        </div>
+
+        <div class="tarjeta">
+            <h2>⚙️ Sección 6</h2>
+            <p>Información de la sexta sección.</p>
+            <a href="seccion6.html" class="boton">Entrar</a>
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 </html>

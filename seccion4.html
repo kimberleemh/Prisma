@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WikiSeries</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(to bottom,#1b1b1b,#0f0f0f);
+    color:white;
+}
+
+header{
+    background:#111;
+    padding:20px;
+    text-align:center;
+    border-bottom:3px solid #e50914;
+}
+
+header h1{
+    color:#e50914;
+    font-size:40px;
+}
+
+header p{
+    color:#ccc;
+}
+
+.buscador{
+    margin:20px auto;
+    text-align:center;
+}
+
+.buscador input{
+    width:60%;
+    max-width:500px;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.contenedor{
+    width:90%;
+    margin:auto;
+    padding:20px;
+}
+
+.categoria{
+    margin-bottom:40px;
+}
+
+.categoria h2{
+    margin-bottom:15px;
+    border-left:5px solid #e50914;
+    padding-left:10px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.tarjeta{
+    background:#222;
+    border-radius:10px;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.tarjeta:hover{
+    transform:scale(1.05);
+}
+
+.tarjeta img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+}
+
+.info{
+    padding:15px;
+}
+
+.info h3{
+    margin-bottom:10px;
+}
+
+.info p{
+    color:#bbb;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.boton{
+    display:inline-block;
+    text-decoration:none;
+    background:#e50914;
+    color:white;
+    padding:8px 15px;
+    border-radius:5px;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    background:#111;
+    margin-top:30px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📚 PrismaSeries</h1>
+    <p>Enciclopedia de Series y Películas</p>
+</header>
+
+<div class="buscador">
+    <input type="text" id="buscar"
+    placeholder="Buscar serie o película..."
+    onkeyup="filtrar()">
+</div>
+
+<div class="contenedor">
+<div class="categoria">
+    <h2>📺 Series</h2>
+
+    <div class="grid">
+
+        <div class="tarjeta">
+            <img src="https://via.placeholder.com/300x450" alt="">
+            <div class="info">
+                <h3>Una Serie de Eventos Desafortunados</h3>
+                <p>Aventuras de los hermanos Baudelaire.</p>
+                <a href="eventos.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <img src="https://via.placeholder.com/300x450" alt="">
+            <div class="info">
+                <h3>Veinticinco Veintiuno</h3>
+                <p>Drama romántico coreano.</p>
+                <a href="2521.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <img src="https://via.placeholder.com/300x450" alt="">
+            <div class="info">
+                <h3>Sabuesos</h3>
+                <p>Acción y drama criminal.</p>
+                <a href="sabuesos.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <img src="https://via.placeholder.com/300x450" alt="">
+            <div class="info">
+                <h3>Serie 4</h3>
+                <p>Descripción de la serie.</p>
+                <a href="serie4.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <img src="https://via.placeholder.com/300x450" alt="">
+            <div class="info">
+                <h3>Serie 5</h3>
+                <p>Descripción de la serie.</p>
+                <a href="serie5.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="categoria">
+    <h2>🎬 Películas</h2>
+
+    <div class="grid">
+
+        <div class="tarjeta">
+            <img src="isla de perros.jpg" alt="">
+            <div class="info">
+                <h3>Isla de Perros</h3>
+                <p>Animación stop-motion de Wes Anderson.</p>
+                <a href="isladeperros.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <img src="https://via.placeholder.com/300x450" alt="">
+            <div class="info">
+                <h3>Long Story Short</h3>
+                <p>Comedia romántica fantástica.</p>
+                <a href="longstoryshort.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+        <!-- NUEVAS FICHAS VACÍAS -->
+
+        <div class="tarjeta">
+            <img src="https://via.placeholder.com/300x450" alt="">
+            <div class="info">
+                <h3>Película 3</h3>
+                <p>Descripción de la película.</p>
+                <a href="pelicula3.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <img src="https://via.placeholder.com/300x450" alt="">
+            <div class="info">
+                <h3>Película 4</h3>
+                <p>Descripción de la película.</p>
+                <a href="pelicula4.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <img src="https://via.placeholder.com/300x450" alt="">
+            <div class="info">
+                <h3>Película 5</h3>
+                <p>Descripción de la película.</p>
+                <a href="pelicula5.html" class="boton">Ver ficha</a>
+            </div>
+        </div>
+
+        </div>
+
+    </div>
+</div>
+</div>
+
+<footer>
+    WikiSeries © 2026
+</footer>
+
+<script>
+
+function filtrar(){
+
+let input =
+document.getElementById("buscar")
+.value.toLowerCase();
+
+let tarjetas =
+document.querySelectorAll(".tarjeta");
+
+tarjetas.forEach(tarjeta=>{
+
+let titulo =
+tarjeta.querySelector("h3")
+.textContent.toLowerCase();
+
+if(titulo.includes(input)){
+tarjeta.style.display="block";
+}else{
+tarjeta.style.display="none";
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

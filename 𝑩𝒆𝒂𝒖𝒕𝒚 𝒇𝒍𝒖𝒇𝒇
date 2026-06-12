@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beauty Fluff</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#911652,#F39EC6,#FF75AA);
+    overflow-x:hidden;
+    color:#5a3d4b;
+}
+
+/* FONDO DECORACIÓN */
+
+.fondo{
+    position:fixed;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    z-index:-1;
+}
+
+.burbuja{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.4);
+    animation:flotar 12s infinite;
+}
+
+.burbuja:nth-child(1){
+    width:100px;
+    height:100px;
+    left:10%;
+    top:80%;
+}
+
+.burbuja:nth-child(2){
+    width:150px;
+    height:150px;
+    left:70%;
+    top:90%;
+}
+
+.burbuja:nth-child(3){
+    width:80px;
+    height:80px;
+    left:40%;
+    top:95%;
+}
+
+@keyframes flotar{
+    0%{
+        transform:translateY(0);
+    }
+    100%{
+        transform:translateY(-120vh);
+    }
+}
+
+/* HEADER */
+
+header{
+    text-align:center;
+    padding:10px;
+    background:rgba(255,255,255,0.4);
+    backdrop-filter:blur(10px);
+    box-shadow:0 rgba(78, 80, 91, 1)px 20px rgba(0,0,0,0.1);
+}
+
+header h1{
+    font-family:'Pacifico',cursive;
+    font-size:60px;
+    color:#7D153F;#410F32
+}
+
+header p{
+    margin-top:10px;
+    font-size:18px;
+    color:#7b5c68;
+}
+
+/* CONTENEDOR */
+
+.container{
+    max-width:850px;
+    margin:40px auto;
+    padding:25px;
+}
+
+/* TARJETAS */
+
+.card{
+    background:rgba(255,255,255,0.55);
+    backdrop-filter:blur(15px);
+    border-radius:30px;
+    padding:30px;
+    margin-bottom:35px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+    border:1px solid rgba(255,255,255,0.4);
+}
+
+.card h2{
+    color:#ff5c9f;
+    color:#410F32;
+    margin-bottom:20px;
+    font-size:28px;
+}
+
+/* INPUTS */
+
+select{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:18px;
+    margin-top:10px;
+    margin-bottom:20px;
+    font-size:16px;
+    background:#fff6fa;
+    color:#6b4d58;
+    outline:none;
+}
+
+/* BOTONES */
+
+button{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:20px;
+    background:linear-gradient(90deg,#ff5c9f,#ff8db7);
+    color:white;
+    font-size:18px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 5px 15px rgba(255,92,159,0.3);
+}
+
+button:hover{
+    transform:translateY(-3px) scale(1.02);
+}
+
+/* RESULTADOS */
+
+.resultado{
+    margin-top:25px;
+    background:#FFD9EC;
+    border-radius:25px;
+    padding:25px;
+    line-height:1.9;
+    font-size:17px;
+    color:#6b4d58;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* DECORACIÓN */
+
+.decoracion{
+    text-align:center;
+    font-size:30px;
+    margin-bottom:20px;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#8B6A76;
+    font-size:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="fondo">
+    <div class="burbuja"></div>
+    <div class="burbuja"></div>
+    <div class="burbuja"></div>
+</div>
+
+<header>
+
+<h1>  ⋆ 𐙚 Beauty Fluff ⋆</h1>
+
+<p>
+Tu app de cortes y cuidado del cabello ֶָ֢
+</p>
+
+</header>
+
+<div class="container">
+
+<!-- MENÚ CORTES -->
+
+<div class="card">
+
+<div class="decoracion">
+-ˋˏ✄
+</div>
+
+<h2> ⋆ Menú de Cortes</h2>
+
+<select id="corte">
+
+<option value="mariposa">🦋 Corte Mariposa</option>
+<option value="wolf">🐺 Wolf Cut</option>
+<option value="bob">✨ Bob Clásico</option>
+<option value="longbob">💎 Long Bob</option>
+<option value="pixie">🔥 Pixie Cut</option>
+<option value="capas">🌸 Capas Largas</option>
+<option value="shaggy">🌟 Shaggy</option>
+<option value="v">💫 Corte en V</option>
+<option value="u">🌷 Corte en U</option>
+<option value="fleco">💖 Curtain Bangs</option>
+
+</select>
+
+<h2> ⋆  Largo del Cabello</h2>
+
+<select id="cabello">
+
+<option value="corto">Cabello Corto</option>
+<option value="medio">Cabello Medio</option>
+<option value="largo">Cabello Largo</option>
+
+</select>
+
+<button onclick="mostrarCorte()">
+Ver recomendación ✨
+</button>
+
+<div class="resultado" id="resultado">
+
+Aquí aparecerá tu recomendación 💖
+
+</div>
+
+</div>
+
+<!-- TEST -->
+
+<div class="card">
+
+<div class="decoracion">
+-ˋˏ✄ .
+</div>
+
+<h2> ⋆  Test Beauty Fluff ⋆ </h2>
+
+<p>
+Descubre qué corte y tonos quedan mejor contigo 💖
+</p>
+
+<br>
+
+<h3>💖 Forma de tu rostro</h3>
+
+<select id="rostro">
+
+<option value="ovalado">Ovalado</option>
+<option value="redondo">Redondo</option>
+<option value="cuadrado">Cuadrado</option>
+<option value="corazon">Corazón</option>
+<option value="alargado">Alargado</option>
+
+</select>
+
+<h3>☁️ Colorimetría</h3>
+
+<select id="color">
+
+<option value="calida">Cálida ☀️</option>
+<option value="fria">Fría ❄️</option>
+<option value="neutral">Neutral 🌸</option>
+
+</select>
+
+<h3>🌸 Tipo de cabello</h3>
+
+<select id="tipo">
+
+<option value="lacio">Lacio</option>
+<option value="ondulado">Ondulado</option>
+<option value="rizado">Rizado</option>
+
+</select>
+
+<button onclick="hacerTest()">
+Descubrir mi estilo ✨
+</button>
+
+<div class="resultado" id="resultadoTest">
+
+Tu resultado aparecerá aquí 💖
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+𝑩𝒆𝒂𝒖𝒕𝒚 𝒇𝒍𝒖𝒇𝒇 — Ingrid Jatziry Vicente Luna 6"A"
+Programacion             💖
+
+</footer>
+
+<script>
+
+function mostrarCorte(){
+
+let corte=document.getElementById("corte").value;
+
+let texto="";
+
+if(corte=="mariposa"){
+
+texto=`
+<h2>🦋 Corte Mariposa</h2>
+
+✔ Ángulos recomendados: 90° y 180°.<br>
+✔ Cortar entre 6 y 12 cm.<br><br>
+
+💖 Cuidados:<br>
+• Protector térmico.<br>
+• Aceite para puntas.<br>
+• Mascarillas hidratantes.<br><br>
+
+✂ Retocar cada 2 meses.<br><br>
+
+✨ Peinados:<br>
+1. Ondas suaves<br>
+2. Coleta alta<br>
+3. Chongo aesthetic
+`;
+}
+
+if(corte=="wolf"){
+
+texto=`
+<h2>🐺 Wolf Cut</h2>
+
+✔ Ángulo: 90°.<br>
+✔ Cortar entre 8 y 15 cm.<br><br>
+
+💖 Cuidados:<br>
+• Difusor para volumen.<br>
+• Mousse ligera.<br>
+• Hidratar puntas.<br><br>
+
+✂ Retocar cada mes y medio.<br><br>
+
+✨ Peinados:<br>
+1. Ondas messy<br>
+2. Cola relajada<br>
+3. Fleco despeinado
+`;
+}
+
+if(corte=="bob"){
+
+texto=`
+<h2>✨ Bob Clásico</h2>
+
+✔ Ángulo: 0°.<br>
+✔ Cortar entre 5 y 10 cm.<br><br>
+
+💖 Cuidados:<br>
+• Sérum capilar.<br>
+• Evitar calor excesivo.<br>
+• Despuntar seguido.<br><br>
+
+✂ Retocar cada 6 semanas.
+`;
+}
+
+if(corte=="pixie"){
+
+texto=`
+<h2>🔥 Pixie Cut</h2>
+
+✔ Ángulos: 45° y 90°.<br>
+✔ Cortar entre 10 y 20 cm.<br><br>
+
+💖 Cuidados:<br>
+• Cera moldeadora.<br>
+• Mantener volumen.<br>
+• Lavar constantemente.<br><br>
+
+✂ Retocar cada mes.
+`;
+}
+
+if(corte=="longbob"){
+
+texto=`
+<h2>💎 Long Bob</h2>
+
+✔ Ángulo: 45°.<br>
+✔ Cortar entre 7 y 12 cm.<br><br>
+
+💖 Cuidados:<br>
+• Shampoo hidratante.<br>
+• Aceite de argán.<br>
+• Protector de calor.<br><br>
+
+✂ Retocar cada 2 meses.
+`;
+}
+
+if(corte=="capas"){
+
+texto=`
+<h2>🌸 Capas Largas</h2>
+
+✔ Ángulo: 90°.<br>
+✔ Cortar entre 4 y 8 cm.<br><br>
+
+💖 Cuidados:<br>
+• Mascarillas 2 veces por semana.<br>
+• Cepillo suave.<br>
+• No dormir con cabello mojado.<br><br>
+
+✂ Retocar cada 2 meses.
+`;
+}
+
+if(corte=="shaggy"){
+
+texto=`
+<h2>🌟 Shaggy</h2>
+
+✔ Ángulo: 90°.<br>
+✔ Cortar entre 7 y 13 cm.<br><br>
+
+💖 Cuidados:<br>
+• Mousse ligera.<br>
+• Difusor.<br>
+• Hidratación semanal.<br><br>
+
+✂ Retocar cada 2 meses.
+`;
+}
+
+if(corte=="v"){
+
+texto=`
+<h2>💫 Corte en V</h2>
+
+✔ Ángulo: 180°.<br>
+✔ Cortar entre 5 y 10 cm.<br><br>
+
+💖 Cuidados:<br>
+• Aceite capilar.<br>
+• Mascarillas nutritivas.<br>
+• Despuntar seguido.<br><br>
+
+✂ Retocar cada 2 meses.
+`;
+}
+
+if(corte=="u"){
+
+texto=`
+<h2>🌷 Corte en U</h2>
+
+✔ Ángulo: 180° suave.<br>
+✔ Cortar entre 4 y 9 cm.<br><br>
+
+💖 Cuidados:<br>
+• Shampoo nutritivo.<br>
+• Protector térmico.<br>
+• Cepillo suave.<br><br>
+
+✂ Retocar cada 2 meses.
+`;
+}
+
+if(corte=="fleco"){
+
+texto=`
+<h2>💖 Curtain Bangs</h2>
+
+✔ Ángulo: 45°.<br>
+✔ Cortar entre 2 y 5 cm.<br><br>
+
+💖 Cuidados:<br>
+• Mantener el fleco limpio.<br>
+• Planchar poco.<br>
+• Peinar diariamente.<br><br>
+
+✂ Retocar cada 3 semanas.
+`;
+}
+
+document.getElementById("resultado").innerHTML=texto;
+
+}
+
+function hacerTest(){
+
+let rostro=document.getElementById("rostro").value;
+let color=document.getElementById("color").value;
+let tipo=document.getElementById("tipo").value;
+
+let resultado="";
+
+if(rostro=="ovalado"){
+resultado+="💖 Tu rostro combina con casi todos los cortes.<br>";
+}
+
+if(rostro=="redondo"){
+resultado+="🌸 Te favorecen capas largas y cortes que alarguen el rostro.<br>";
+}
+
+if(rostro=="cuadrado"){
+resultado+="✨ Las ondas suaves y flecos ligeros suavizan tus facciones.<br>";
+}
+
+if(rostro=="corazon"){
+resultado+="💫 Los curtain bangs y long bob se verán hermosos en ti.<br>";
+}
+
+if(rostro=="alargado"){
+resultado+="🌷 Los cortes con volumen y fleco son ideales para ti.<br>";
+}
+
+if(color=="calida"){
+resultado+="<br>☀️ Tonos ideales: miel, chocolate, caramelo y cobrizo.";
+}
+
+if(color=="fria"){
+resultado+="<br>❄️ Tonos ideales: negro, vino, cenizo y rubios fríos.";
+}
+
+if(color=="neutral"){
+resultado+="<br>🌸 Puedes usar muchísimos tonos de cabello.";
+}
+
+if(tipo=="lacio"){
+resultado+="<br><br>💇‍♀️ Cortes ideales: Bob, Long Bob y Mariposa.";
+}
+
+if(tipo=="ondulado"){
+resultado+="<br><br>💇‍♀️ Cortes ideales: Wolf Cut y Shaggy.";
+}
+
+if(tipo=="rizado"){
+resultado+="<br><br>💇‍♀️ Cortes ideales: Capas largas y fleco suave.";
+}
+
+resultado+=`
+<br><br>
+✨ Consejo Beauty Fluff:<br>
+Corta tus puntas cada 2 meses y usa mascarillas hidratantes para mantener tu cabello hermoso 💖
+`;
+
+document.getElementById("resultadoTest").innerHTML=resultado;
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,624 @@
+<html>
+<head>
+    <title>FridgeFix</title>
+    <style>
+        :root {
+            --bg-green-soft: #A8E6CF;
+            --white: #FFFFFF;
+            --gray-bg: #F5F7FA;
+            --orange-main: #FF8C2E;
+            --text-dark: #2D3436;
+            --item-selected-bg: #C1F0E0;
+            --item-selected-border: #6ECBA9;
+            --btn-green: #63a992;
+            --step-bg-green: #52B795;
+        }
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: var(--bg-green-soft);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            color: var(--text-dark);
+        }
+        .page { display: none; width: 100%; min-height: 100vh; flex-direction: column; }
+        .active { display: flex; }
+        .app-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-top: env(safe-area-inset-top);
+        }
+        header {
+            padding: 10px 25px 15px;
+        }
+        h1 {
+            font-size: 40px;
+            margin: 0;
+            line-height: 1;
+            font-weight: 800;
+        }
+        .app-body {
+            background-color: var(--white);
+            flex-grow: 1;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.03);
+            overflow: hidden;
+        }
+        .search-bar-mock {
+            background-color: var(--gray-bg);
+            padding: 15px;
+            border-radius: 15px;
+            color: #999;
+            margin-bottom: 25px;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+        }
+        .grid-scroll-area {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .item {
+            background-color: var(--gray-bg);
+            border-radius: 25px;
+            padding: 20px 5px;
+            text-align: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .item.selected {
+            background-color: var(--item-selected-bg);
+            border-color: var(--item-selected-border);
+            transform: scale(0.96);
+        }
+        .item-icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+            display: block;
+        }
+        .item-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+        }
+        .footer-action {
+            padding: 15px 0;
+            padding-bottom: calc(env(safe-area-inset-bottom, 15px) + 5px);
+            background-color: var(--white);
+        }
+        .btn-cook {
+            background-color: var(--orange-main);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            border-radius: 35px;
+            font-size: 30px;
+            font-weight: bold;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 140, 46, 0.3);
+        }
+        .recipe-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+            border: 1px solid #f0f0f0;
+            display: none;
+        }
+        .recipe-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+        .recipe-info { padding: 15px; }
+        .recipe-info h3 { margin: 0 0 8px; font-size: 20px; color: var(--text-dark); }
+        .recipe-meta { display: flex; gap: 12px; color: #777; font-size: 13px; margin-bottom: 12px; }
+        .btn-view {
+            background-color: var(--btn-green);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-back {
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            cursor: pointer;
+            padding: 0;
+            text-align: left;
+        }
+
+        /* --- ESTILOS DE LA TERCERA PANTALLA: MODO COCINA --- */
+        .title-cooking-mode {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 10px 0 20px 0;
+        }
+        .main-recipe-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 25px;
+            object-fit: cover;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+        }
+        .ingredients-checklist {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+        .check-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--step-bg-green);
+            cursor: pointer;
+        }
+        .step-container {
+            background-color: var(--step-bg-green);
+            border-radius: 35px;
+            padding: 25px;
+            color: var(--white);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .step-number {
+            font-size: 70px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        .step-title {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .step-description {
+            font-size: 16px;
+            line-height: 1.5;
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
+        .step-navigation-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        .btn-step-nav {
+            flex: 1;
+            padding: 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-step-prev {
+            background-color: var(--white);
+            color: var(--text-dark);
+        }
+        .btn-step-next {
+            background-color: var(--orange-main);
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+
+<div id="pantalla-despensa" class="page active">
+    <div class="app-wrapper">
+        <header>
+            <h1>¡¿Qué hay<br>en tu refri?!</h1>
+        </header>
+        <div class="app-body">
+            <div class="search-bar-mock">🔍 Buscar ingrediente...</div>
+            <div class="grid-scroll-area">
+                <div class="grid" id="ingredients-grid">
+                    <div class="item" id="item-agua" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">AGUA</span></div>
+                    <div class="item" id="item-leche" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">LECHE</span></div>
+                    <div class="item" id="item-queso" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">QUESO</span></div>
+                    <div class="item" id="item-huevo" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">HUEVO</span></div>
+                    <div class="item" id="item-jamon" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">JAMON</span></div>
+                    <div class="item" id="item-salchicha" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">SALCHICHA</span></div>
+                    <div class="item" id="item-pollo" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">POLLO</span></div>
+                    <div class="item" id="item-carne" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">CARNE</span></div>
+                    <div class="item" id="item-limon" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">LIMON</span></div>
+                    <div class="item" id="item-manzana" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">MANZANA</span></div>
+                    <div class="item" id="item-fresa" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">FRESA</span></div>
+                    <div class="item" id="item-sandia" onclick="toggleSelect(this)"><span class="item-icon"></span><span class="item-name">SANDIA</span></div>
+                </div>
+            </div>
+            <div class="footer-action">
+                <button class="btn-cook" onclick="procesarCocina()">¿Qué cocino?</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pantalla-recetas" class="page">
+    <div class="app-wrapper">
+        <header>
+            <button class="btn-back" onclick="irAInicio()">← Volver</button>
+            <h1>¡Puedes<br>cocinar esto!</h1>
+        </header>
+        <div class="app-body">
+            <div class="grid-scroll-area"> 
+                
+                <div class="recipe-card rec-agua">
+                    <img src="img1.png" class="recipe-img" alt="Agua de Sandía">
+                    <div class="recipe-info">
+                        <h3>Agua de Sandía</h3>
+                        <div class="recipe-meta"><span>🕒 10 min</span><span>⭐ Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Agua de Sandía')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-leche">
+                    <img src="img2.png" class="recipe-img" alt="Arroz con Leche">
+                    <div class="recipe-info">
+                        <h3>Arroz con Leche</h3>
+                        <div class="recipe-meta"><span>🕒 40 min</span><span>⭐ Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Arroz con Leche')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-queso">
+                    <img src="img3.png" class="recipe-img" alt="Dedos de Queso">
+                    <div class="recipe-info">
+                        <h3>Dedos de Queso</h3>
+                        <div class="recipe-meta"><span>🕒 20 min</span><span>⭐ Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Dedos de Queso')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-huevo">
+                    <img src="img4.png" class="recipe-img" alt="Huevos con Jamón">
+                    <div class="recipe-info">
+                        <h3>Huevos con Jamón</h3>
+                        <div class="recipe-meta"><span>🕒 10 min</span><span>⭐ Muy Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Huevos con Jamón')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-jamon">
+                    <img src="img5.png" class="recipe-img" alt="Rollitos de Jamón y Queso">
+                    <div class="recipe-info">
+                        <h3>Rollitos de Jamón y Queso</h3>
+                        <div class="recipe-meta"><span>🕒 5 min</span><span>⭐ Muy Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Rollitos de Jamón y Queso')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-salchicha">
+                    <img src="img6.png" class="recipe-img" alt="Salchichas a la Mexicana">
+                    <div class="recipe-info">
+                        <h3>Salchichas a la Mexicana</h3>
+                        <div class="recipe-meta"><span>🕒 15 min</span><span>⭐ Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Salchichas a la Mexicana')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-pollo">
+                    <img src="img7.png" class="recipe-img" alt="Pollo Empanizado">
+                    <div class="recipe-info">
+                        <h3>Pollo Empanizado</h3>
+                        <div class="recipe-meta"><span>🕒 25 min</span><span>⭐ Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Pollo Empanizado')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-carne">
+                    <img src="img8.png" class="recipe-img" alt="Albóndigas">
+                    <div class="recipe-info">
+                        <h3>Albóndigas</h3>
+                        <div class="recipe-meta"><span>🕒 35 min</span><span>⭐ Medio</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Albóndigas')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-limon">
+                    <img src="img9.png" class="recipe-img" alt="Pay de Limón">
+                    <div class="recipe-info">
+                        <h3>Pay de Limón</h3>
+                        <div class="recipe-meta"><span>🕒 25 min</span><span>⭐ Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Pay de Limón')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-manzana">
+                    <img src="img10.png" class="recipe-img" alt="Muffins de Manzana">
+                    <div class="recipe-info">
+                        <h3>Muffins de Manzana</h3>
+                        <div class="recipe-meta"><span>🕒 25 min</span><span>⭐ Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Muffins de Manzana')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-fresa">
+                    <img src="img11.png" class="recipe-img" alt="Licuado de Fresa">
+                    <div class="recipe-info">
+                        <h3>Licuado de Fresa</h3>
+                        <div class="recipe-meta"><span>🕒 5 min</span><span>⭐ Muy Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Licuado de Fresa')">Ver Receta</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card rec-sandia">
+                    <img src="img12.png" class="recipe-img" alt="Ensalada de Frutas con Sandía">
+                    <div class="recipe-info">
+                        <h3>Ensalada de Frutas con Sandía</h3>
+                        <div class="recipe-meta"><span>🕒 15 min</span><span>⭐ Fácil</span></div>
+                        <button class="btn-view" onclick="verDetalleReceta('Ensalada de Frutas con Sandía')">Ver Receta</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pantalla-detalle-receta" class="page">
+    <div class="app-wrapper">
+        <header>
+            <button class="btn-back" onclick="irARecetas()">← Volver a recetas</button>
+            <div class="title-cooking-mode" id="recipe-detail-title">Nombre Receta</div>
+        </header>
+        <div class="app-body">
+            <div class="grid-scroll-area">
+                <img src="" class="main-recipe-image" alt="Imagen receta">
+                
+                <div class="section-title">Ingredientes</div>
+                <div class="ingredients-checklist">
+                    </div>
+
+                <div class="step-container">
+                    <div>
+                        <div class="step-number">1</div>
+                        <div class="step-title">Paso a Paso</div>
+                        <div class="step-description">
+                            </div>
+                    </div>
+                    
+                    <div class="step-navigation-buttons">
+                        <button class="btn-step-nav btn-step-prev">Paso Anterior</button>
+                        <button class="btn-step-nav btn-step-next">Paso Siguiente</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSelect(element) {
+        element.classList.toggle('selected');
+    }
+
+    function procesarCocina() {
+        const aguaSeleccionada = document.getElementById('item-agua').classList.contains('selected');
+        const lecheSeleccionada = document.getElementById('item-leche').classList.contains('selected');
+        const quesoSeleccionado = document.getElementById('item-queso').classList.contains('selected');
+        const huevoSeleccionado = document.getElementById('item-huevo').classList.contains('selected');
+        const jamonSeleccionada = document.getElementById('item-jamon').classList.contains('selected');
+        const salchichaSeleccionada = document.getElementById('item-salchicha').classList.contains('selected');
+        const polloSeleccionado = document.getElementById('item-pollo').classList.contains('selected');
+        const carneSeleccionada = document.getElementById('item-carne').classList.contains('selected');
+        const limonSeleccionado = document.getElementById('item-limon').classList.contains('selected');
+        const manzanaSeleccionada = document.getElementById('item-manzana').classList.contains('selected');
+        const fresaSeleccionada = document.getElementById('item-fresa').classList.contains('selected');
+        const sandiaSeleccionada = document.getElementById('item-sandia').classList.contains('selected');
+
+        document.querySelectorAll('.recipe-card').forEach(card => card.style.display = 'none');
+
+        if (aguaSeleccionada) document.querySelectorAll('.rec-agua').forEach(card => card.style.display = 'block');
+        if (lecheSeleccionada) document.querySelectorAll('.rec-leche').forEach(card => card.style.display = 'block');
+        if (quesoSeleccionado) document.querySelectorAll('.rec-queso').forEach(card => card.style.display = 'block');
+        if (huevoSeleccionado) document.querySelectorAll('.rec-huevo').forEach(card => card.style.display = 'block');
+        if (jamonSeleccionada) document.querySelectorAll('.rec-jamon').forEach(card => card.style.display = 'block');
+        if (salchichaSeleccionada) document.querySelectorAll('.rec-salchicha').forEach(card => card.style.display = 'block');
+        if (polloSeleccionado) document.querySelectorAll('.rec-pollo').forEach(card => card.style.display = 'block');
+        if (carneSeleccionada) document.querySelectorAll('.rec-carne').forEach(card => card.style.display = 'block');
+        if (limonSeleccionado) document.querySelectorAll('.rec-limon').forEach(card => card.style.display = 'block');
+        if (manzanaSeleccionada) document.querySelectorAll('.rec-manzana').forEach(card => card.style.display = 'block');
+        if (fresaSeleccionada) document.querySelectorAll('.rec-fresa').forEach(card => card.style.display = 'block');
+        if (sandiaSeleccionada) document.querySelectorAll('.rec-sandia').forEach(card => card.style.display = 'block');
+
+        document.getElementById('pantalla-despensa').classList.remove('active');
+        document.getElementById('pantalla-recetas').classList.add('active');
+    }
+
+    function irAInicio() {
+        document.getElementById('pantalla-recetas').classList.remove('active');
+        document.getElementById('pantalla-despensa').classList.add('active');
+    }
+
+    function irARecetas() {
+        document.getElementById('pantalla-detalle-receta').classList.remove('active');
+        document.getElementById('pantalla-recetas').classList.add('active');
+    }
+
+    // LOGICA DINÁMICA DE LA PANTALLA 3 PARA LAS 12 RECETAS EXCLUSIVAS
+    function verDetalleReceta(nombreReceta) {
+        const titulo = document.getElementById('recipe-detail-title');
+        const imagen = document.querySelector('.main-recipe-image');
+        const contenedorIngredientes = document.querySelector('.ingredients-checklist');
+        const descripcionPaso = document.querySelector('.step-description');
+
+        titulo.innerText = nombreReceta;
+        imagen.alt = nombreReceta;
+
+        if (nombreReceta === 'Agua de Sandía') {
+            imagen.src = "img1.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Sandía</label>
+                <label class="check-item"><input type="checkbox"> Agua</label>
+                <label class="check-item"><input type="checkbox"> Azúcar</label>
+                <label class="check-item"><input type="checkbox"> Hielo</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Licúa trozos de sandía fresca con agua y azúcar al gusto. Cuela la pulpa si lo prefieres y sírvela bien fría acompañada de hielos.";
+        } 
+        else if (nombreReceta === 'Arroz con Leche') {
+            imagen.src = "img2.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Arroz</label>
+                <label class="check-item"><input type="checkbox"> Leche entera</label>
+                <label class="check-item"><input type="checkbox"> Canela</label>
+                <label class="check-item"><input type="checkbox"> Azúcar</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Pon a cocer el arroz en agua junto con la rajita de canela. En cuanto notes que ablanda, vierte la leche entera, añade azúcar y remueve constantemente a fuego bajo hasta que espese a tu gusto.";
+        }
+        else if (nombreReceta === 'Dedos de Queso') {
+            imagen.src = "img3.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Queso Manchego</label>
+                <label class="check-item"><input type="checkbox"> Huevo</label>
+                <label class="check-item"><input type="checkbox"> Pan molido</label>
+                <label class="check-item"><input type="checkbox"> Aceite</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Corta el queso manchego en bastones medianos. Pásalos uno por uno por el huevo batido, cúbrelos por completo con pan molido y fríelos de inmediato en aceite bien caliente hasta dorar.";
+        }
+        else if (nombreReceta === 'Huevos con Jamón') {
+            imagen.src = "img4.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Huevos</label>
+                <label class="check-item"><input type="checkbox"> Jamón</label>
+                <label class="check-item"><input type="checkbox"> Sal</label>
+                <label class="check-item"><input type="checkbox"> Aceite</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Corta el jamón en cubitos finos y sofríelo ligeramente en una sartén caliente con aceite. Bate los huevos con una pizca de sal, viértelos sobre el jamón y cocina revolviendo despacio.";
+        }
+        else if (nombreReceta === 'Rollitos de Jamón y Queso') {
+            imagen.src = "img5.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Jamón rebanado</label>
+                <label class="check-item"><input type="checkbox"> Queso laminado</label>
+                <label class="check-item"><input type="checkbox"> Palillos</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Extiende una rebanada de jamón sobre un plato liso, pon encima una lámina de queso, enrolla todo con firmeza comenzando desde un extremo y sujétalo colocando un palillo en el centro.";
+        }
+        else if (nombreReceta === 'Salchichas a la Mexicana') {
+            imagen.src = "img6.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Salchichas</label>
+                <label class="check-item"><input type="checkbox"> Jitomate</label>
+                <label class="check-item"><input type="checkbox"> Cebolla</label>
+                <label class="check-item"><input type="checkbox"> Chile serrano</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Pica finamente la cebolla, el jitomate y el chile. Sofríelos en un sartén y, tras un par de minutos, integra las salchichas cortadas en rodajas. Deja sazonar todo junto a fuego medio por 10 minutos.";
+        }
+        else if (nombreReceta === 'Pollo Empanizado') {
+            imagen.src = "img7.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Pechuga Pollo</label>
+                <label class="check-item"><input type="checkbox"> Pan molido</label>
+                <label class="check-item"><input type="checkbox"> Huevo</label>
+                <label class="check-item"><input type="checkbox"> Especias</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Sazona las milanesas de pechuga con tus especias. Pásalas primero por el huevo previamente revuelto, cúbrelas uniformemente presionando sobre el pan molido y fríelas en la sartén hasta que queden crujientes.";
+        }
+        else if (nombreReceta === 'Albóndigas') {
+            imagen.src = "img8.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Carne molida</label>
+                <label class="check-item"><input type="checkbox"> Huevo</label>
+                <label class="check-item"><input type="checkbox"> Puré Jitomate</label>
+                <label class="check-item"><input type="checkbox"> Condimentos</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Integra por completo la carne molida con el huevo y condimentos. Forma bolitas firmes del mismo tamaño con las manos y colócalas dentro de un puré de jitomate hirviendo para cocerlas a fuego medio.";
+        }
+        else if (nombreReceta === 'Pay de Limón') {
+            imagen.src = "img9.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Jugo de Limón</label>
+                <label class="check-item"><input type="checkbox"> Galletas María</label>
+                <label class="check-item"><input type="checkbox"> Leche Condensada</label>
+                <label class="check-item"><input type="checkbox"> Leche Evaporada</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Licúa el jugo fresco de limón junto con la leche condensada y evaporada. En un refractario limpio coloca una base de galletas María, cubre con crema de limón, alterna capas y mete a refrigerar.";
+        }
+        else if (nombreReceta === 'Muffins de Manzana') {
+            imagen.src = "img10.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Manzana picada</label>
+                <label class="check-item"><input type="checkbox"> Harina</label>
+                <label class="check-item"><input type="checkbox"> Azúcar</label>
+                <label class="check-item"><input type="checkbox"> Canela</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Mezcla en un tazón la harina, azúcar y canela en polvo. Incorpora los cubos de manzana picada, reparte de forma equitativa en tus moldes para muffin y hornea a una temperatura constante de 180°C.";
+        }
+        else if (nombreReceta === 'Licuado de Fresa') {
+            imagen.src = "img11.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Fresas limpias</label>
+                <label class="check-item"><input type="checkbox"> Leche</label>
+                <label class="check-item"><input type="checkbox"> Azúcar o Miel</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Añade las fresas previamente lavadas y desinfectadas al vaso de la licuadora junto con la leche bien fría y tu endulzante elegido. Procesa por un minuto hasta conseguir una textura suave.";
+        }
+        else if (nombreReceta === 'Ensalada de Frutas con Sandía') {
+            imagen.src = "img12.png"; 
+            contenedorIngredientes.innerHTML = `
+                <label class="check-item"><input type="checkbox"> Sandía</label>
+                <label class="check-item"><input type="checkbox"> Melón o Plátano</label>
+                <label class="check-item"><input type="checkbox"> Yogur o Miel</label>
+            `;
+            descripcionPaso.innerHTML = "Paso 1: Corta la sandía y el resto de tus frutas frescas en pequeños dados uniformes. Mézclalas bien dentro de un tazón grande y añade por encima un toque dulce de miel o yogur natural al momento de servir.";
+        }
+
+        document.getElementById('pantalla-recetas').classList.remove('active');
+        document.getElementById('pantalla-detalle-receta').classList.add('active');
+    }
+</script>
+
+</body>
+</html>
